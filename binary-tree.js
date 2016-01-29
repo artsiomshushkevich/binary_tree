@@ -3,7 +3,7 @@
 class BinaryTree {
 	constructor() {
 		this.root = null;
-		this.counter = 0;
+		
 	}
 
 	insert(data) {
@@ -35,20 +35,36 @@ class BinaryTree {
 			
 	}
 
-	
-	remove(data) {
+	minimum (node) {
+		if  (node.left == null) {
+			return node;
+		}
+		return minimum(node.left);
+	}
 
+	remove(data) {
+		this.root = this.removeUsingRecursion(this.root, data);
 	}
 
 
 
 	removeUsingRecursion(node, data) {
-		/*if (node == null) {
-			return; 
+		if (node == null) {
+			return node; 
 		}
 		if (node.data > data) {
-			node.left = removeUsingRecursion(node.left, data);
-		} else if */
+			node.left = this.removeUsingRecursion(node.left, data);
+		} else if (node.data < data) {
+			node.right = this.removeUsingRecursion(node.right, data);
+		} else if (node.left != null && node.right != null && node.data == data) {
+			node.data = this.minimum(node.right).data;
+			node.right = this.removeUsingRecursion(node.right, node.right.data);
+		} else if (node.left != null && node.data == data) {
+			node = node.left;
+		} else if (node.data == data){
+			node = node.right;
+		}
+		return node
 	}
 
 	size() {
@@ -70,8 +86,6 @@ class BinaryTree {
 			this.sizeUsingRecursion(node.left);
 			this.sizeUsingRecursion(node.right);
 		} 
-		
-
 	}
 
 	isEmpty() {
