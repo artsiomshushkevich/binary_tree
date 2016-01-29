@@ -21,10 +21,18 @@ class BinaryTree {
 	}
 
 	contains(data) {
+		return this.containsWithNodeParam(this.root, data);
 	}
 
 	containsWithNodeParam(node, data) {
-
+		if (node == null) {
+			return false;
+		}
+		return node.data == data || 
+			   this.containsWithNodeParam(node.left, data) ||
+			   this.containsWithNodeParam(node.right, data);
+		
+		
 	}
 
 	remove(data) {
@@ -32,7 +40,7 @@ class BinaryTree {
 	}
 
 	size() {
-
+		
 	}
 
 	isEmpty() {
