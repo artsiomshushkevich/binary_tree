@@ -3,7 +3,6 @@
 class BinaryTree {
 	constructor() {
 		this.root = null;
-		
 	}
 
 	insert(data) {
@@ -68,24 +67,17 @@ class BinaryTree {
 	}
 
 	size() {
-		if (this.root == null) {
-			return 0;
-		}
-
-		this.sizeUsingRecursion(this.root, 0);
-
-		var tempCounter = this.counter;
-		this.counter = 0;
-		return tempCounter;
-
+		return this.sizeUsingRecursion(this.root);
 	}
 
 	sizeUsingRecursion(node){
-		if (node != null) {
-			this.counter++;
-			this.sizeUsingRecursion(node.left);
-			this.sizeUsingRecursion(node.right);
-		} 
+		var count = 0;
+
+		if (node !== null) {
+				count = 1 + this.sizeUsingRecursion(node.left) + this.sizeUsingRecursion(node.right);
+		}
+		return count;
+
 	}
 
 	isEmpty() {
