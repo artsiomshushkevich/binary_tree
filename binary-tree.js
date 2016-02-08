@@ -1,4 +1,4 @@
-'use strict';
+'use strict'	;
 
 class BinaryTree {
 	constructor() {
@@ -6,85 +6,86 @@ class BinaryTree {
 	}
 
 	insert(data) {
-		this.root = this.insertUsingRecursion(this.root, data);
-	}
+		let recursiveInsert = (node, data) => {
+			if  (node == null) {
+				return new Node (data, null, null);
+			} else if (node.data > data) {
+				node.left = recursiveInsert(node.left, data);
+			} else {
+				node.right = recursiveInsert(node.right, data)
+			}
 
-	insertUsingRecursion(node, data) {
-		if  (node == null) {
-			return new Node (data, null, null);
-		} else if (node.data > data) {
-			node.left = this.insertUsingRecursion(node.left, data);
-		} else {
-			node.right = this.insertUsingRecursion(node.right, data)
-		}
-		return node;
+			return node;
+		};
+
+		this.root = recursiveInsert(this.root, data);
 	}
 
 	contains(data) {
-		return this.containsUsingRecursion(this.root, data);
-	}
+		let recursiveContains = (node, data) => {
+			if (node == null) {
+				return false;
+			}
+				return node.data == data || 
+					   recursiveContains(node.left, data) ||
+					   recursiveContains(node.right, data);
+		};
 
-	containsUsingRecursion(node, data) {
-		if (node == null) {
-			return false;
-		}
-		return node.data == data || 
-			   this.containsUsingRecursion(node.left, data) ||
-			   this.containsUsingRecursion(node.right, data);
-			
+		return recursiveContains(this.root, data);
 	}
 
 	minimum (node) {
 		if  (node.left == null) {
 			return node;
 		}
-		return minimum(node.left);
+
+		return this.minimum(node.left);
 	}
 
 	remove(data) {
-		this.root = this.removeUsingRecursion(this.root, data);
-	}
+		let recursiveRemove = (node, data) => {
+			if (node == null) {
+				return node; 
+			}
 
+			if (node.data > data) {
+				node.left = recursiveRemove(node.left, data);
+			} else if (node.data < data) {
+				node.right = recursiveRemove(node.right, data);
+			} else if (node.left != null && node.right != null) {
+				node.data = this.minimum(node.right).data;
+				node.right = recursiveRemove(node.right, node.right.data);
+			} else if (node.left != null) {
+				node = node.left;
+			} else {
+				node = node.right;
+			};
 
-
-	removeUsingRecursion(node, data) {
-		if (node == null) {
-			return node; 
+			return node
 		}
-		if (node.data > data) {
-			node.left = this.removeUsingRecursion(node.left, data);
-		} else if (node.data < data) {
-			node.right = this.removeUsingRecursion(node.right, data);
-		} else if (node.left != null && node.right != null && node.data == data) {
-			node.data = this.minimum(node.right).data;
-			node.right = this.removeUsingRecursion(node.right, node.right.data);
-		} else if (node.left != null && node.data == data) {
-			node = node.left;
-		} else if (node.data == data){
-			node = node.right;
-		}
-		return node
+
+		this.root = recursiveRemove(this.root, data);
 	}
 
 	size() {
-		return this.sizeUsingRecursion(this.root);
-	}
+		let recursiveSize = (node) => {
+			let count = 0;
 
-	sizeUsingRecursion(node){
-		var count = 0;
+			if (node !== null) {
+				count = 1 + recursiveSize(node.left) + recursiveSize(node.right);
+			}
 
-		if (node !== null) {
-				count = 1 + this.sizeUsingRecursion(node.left) + this.sizeUsingRecursion(node.right);
-		}
-		return count;
+			return count;
+		};
 
+		return recursiveSize(this.root);
 	}
 
 	isEmpty() {
 		if (this.root != null){
 			return false;
-		} else {
-			return true;
 		}
+
+		return true;
 	}
 }
